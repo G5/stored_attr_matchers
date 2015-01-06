@@ -7,7 +7,7 @@ TODO: Write a gem description
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'stored_attr_matchers'
+gem 'stored_attr_matchers', group: :test
 ```
 
 And then execute:
@@ -20,7 +20,25 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+This is typically used with something like [Storext](https://rubygems.org/gems/storext), but should work with database-backed models that have attributes that:
+
+- are saved into the database
+- can default to a value if none is given
+- can be type-casted
+
+```ruby
+class Car
+  include Storext
+
+  store_attributes :hstore_column do
+    attribute :name, String, default: "Jim"
+  end
+end
+
+describe Car do
+  it { is_expected.to have_stored_attr(:name, String).with_default("Jim") }
+end
+```
 
 ## Contributing
 
